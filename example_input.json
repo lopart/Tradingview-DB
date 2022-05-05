@@ -1,0 +1,4 @@
+[
+	{"market":"AMEX","stock":"SPY","strategy":"Bollinger + RSI, Double Strategy (by ChartArt) v1.1","timeframe":"30"},
+	{"market":"NYSE","stock":"MCD","strategy":"CM_Ultimate_MA_MTF_V2","timeframe":"30"}
+]
