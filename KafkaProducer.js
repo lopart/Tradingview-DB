@@ -1,17 +1,29 @@
 const { Kafka } = require('kafkajs')
 const TradingView = require("@mathieuc/tradingview");
-const input = require('path/to_your/tradingview_input.json');
+const input = require('/Users/artem_lopatenko/workspace/javascript/tradingview_input.json');
 
 
 let client = new TradingView.Client();
 
 
 var index_list = [];
-let k = 1000;
+let k = 5000;
+
+
+
+// Markets:
+// - e.g. 'NYSE:MCD','NASDAQ:AAPL' .json
+// Indicators:
+// - e.g. Bollinger + RSI, Double Strategy (by ChartArt) v1.1   .json
+// - e.g. CM_Ultimate_MA_MTF_V2
+// Timeframes:
+// - 1D, 5D, 1M etc.
+// - time from now (days)
+
 
 const kafka = new Kafka({
   clientId: 'my-app',
-  brokers: ['localhost:9092'] // local brocker
+  brokers: ['localhost:9092']
 })
 
 const producer = kafka.producer()
@@ -22,9 +34,10 @@ const run = async () => {
   for (let i in input) {
     let chart = new client.Session.Chart();
 
+
     chart.setMarket( input[i].market + ":" + input[i].stock,  {
       timeframe: input[i].timeframe,
-      to: Math.round(Date.now() / 1000) - 90000,// Seven days before now
+      to: Math.round(Date.now() / 1000) - 7200,// Two hours before now
       range: -1,
     });
 
@@ -32,10 +45,9 @@ const run = async () => {
       indicator[0].source = '-';
       let pineIndicator = await indicator[0].get();
       let study = new chart.Study(pineIndicator);
-      
       study.onUpdate((d) => {
-        var today = study.periods[0].$time;
 
+        var today = study.periods[0].$time;
         if (index_list.includes(i) === false) {
           console.log(today);
           console.log(Date.now());
@@ -58,13 +70,13 @@ const run = async () => {
               ],})
           }
         
-        if (today === 1651001400) {
+        if (Math.round(Date.now() / 1000) - today < 1800) {
           if (index_list.includes(i) === false) {
             index_list.push(i);
           }
           if (index_list.length === input.length) {
             console.log("over");
-            k = 30000;
+            k = 1800000 - (Date.now() - today * 1000);
             index_list = [];
             //client.end();
           }
