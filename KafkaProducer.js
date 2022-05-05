@@ -1,6 +1,6 @@
 const { Kafka } = require('kafkajs')
 const TradingView = require("@mathieuc/tradingview");
-const input = require('/Users/artem_lopatenko/workspace/javascript/tradingview_input.json');
+const input = require('/path/to/the/tradingview_input.json');
 
 
 let client = new TradingView.Client();
