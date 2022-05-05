@@ -35,7 +35,7 @@ class InputCheck:
 
 class StrategyCheck:
 	def __init__(self, ranking):
-		self.path = '/Users/artem_lopatenko/workspace/javascript'
+		self.path = '/path/to/the/directory'
 		self.name = 'strategy.json'
 		os.chdir(self.path)
 		self.df = pd.read_json(self.name)
@@ -54,7 +54,7 @@ class StrategyCheck:
 class DatabaseManager:
 	def __init__(self):
 		# path to json file
-		self.path = '/Users/artem_lopatenko/workspace/javascript'
+		self.path = '/path/to/the/directory'
 		self.name = 'tradingview_input.json'
 		os.chdir(self.path)
 		self.df = pd.read_json(self.name)
